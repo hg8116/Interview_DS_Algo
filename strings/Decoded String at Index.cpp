@@ -39,33 +39,29 @@ public:
 
 
 /************************************************ JAVA ************************************************/
-public class Solution {
-    public static String decodeAtIndex(String s, int k) {
-        int n = s.length();
+class Solution {
+    public String decodeAtIndex(String s, int k) {
         long size = 0;
-        for (char c : s.toCharArray()) {
-            if (Character.isDigit(c)) {
-                size *= (c - '0');
-            } else {
-                size += 1;
+        for(int i=0; i<s.length(); i++){
+            char x = s.charAt(i);
+            if(Character.isDigit(x))
+                size *= x - '0';
+            else
+                size++;
+        }
+
+        for(int i=s.length()-1; i>=0; i--){
+            char x = s.charAt(i);
+            if((k == 0 || k == size) && Character.isLetter(x))
+                return String.valueOf(x);
+            else if(Character.isLetter(x))
+                size--;
+            else{
+                size /= x - '0';
+                k %= size;
             }
         }
 
-        for (int i = n - 1; i >= 0; i--) {
-            char c = s.charAt(i);
-            k %= size;
-
-            if (k == 0 && Character.isLetter(c)) {
-                return String.valueOf(c);
-            }
-
-            if (Character.isDigit(c)) {
-                size /= (c - '0');
-            } else {
-                size -= 1;
-            }
-        }
-        
         return "";
     }
 }
